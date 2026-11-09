@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>نبرد کسرها | ریاضی ششم - فصل دوم</title>
+<style>
+:root{--bg:#0a1330;--bg2:#13235a;--cy:#22e6ff;--or:#ff9f1c;--gr:#3dff9a;--rd:#ff3b5c;--pk:#c77dff;--tx:#eef4ff}
+*{box-sizing:border-box;margin:0}
+body{font-family:Tahoma,"Vazirmatn",Arial,sans-serif;color:var(--tx);min-height:100vh;background:radial-gradient(circle at 20% 0,#27409a 0,transparent 45%),radial-gradient(circle at 90% 100%,#5a1d7a 0,transparent 40%),linear-gradient(var(--bg),var(--bg2));background-attachment:fixed;overflow-x:hidden}
+body::before{content:"";position:fixed;inset:0;background-image:linear-gradient(#ffffff0a 1px,transparent 1px),linear-gradient(90deg,#ffffff0a 1px,transparent 1px);background-size:40px 40px;pointer-events:none}
+.scr{display:none;max-width:1000px;margin:0 auto;padding:16px;position:relative}.scr.on{display:block}
+.card{background:linear-gradient(145deg,#1a2c6e,#101c4d);border:2px solid #3b5bd6;border-radius:22px;padding:22px;box-shadow:0 10px 40px #0008,inset 0 0 30px #22e6ff12}
+h1{font-size:clamp(32px,6vw,58px);text-align:center;background:linear-gradient(90deg,var(--cy),var(--gr),var(--or));-webkit-background-clip:text;background-clip:text;color:transparent;margin:6px 0}
+h2{color:var(--or);margin-bottom:10px}
+.sub{text-align:center;opacity:.85;margin-bottom:16px}
+input{width:100%;padding:14px;margin:8px 0;border-radius:14px;border:2px solid #3b5bd6;background:#0a1236;color:#fff;font:inherit;font-size:18px}
+.btn{display:block;width:100%;margin-top:14px;padding:14px;font:inherit;font-size:19px;font-weight:bold;color:#042;background:linear-gradient(var(--gr),#16c46e);border:0;border-radius:16px;cursor:pointer;box-shadow:0 6px 0 #0a7a43;transition:.1s}
+.btn:active{transform:translateY(4px);box-shadow:0 2px 0 #0a7a43}
+.btn.or{background:linear-gradient(#ffc04d,var(--or));box-shadow:0 6px 0 #b36b00;color:#321}
+.warn{background:#ff3b5c22;border:1px dashed var(--rd);border-radius:12px;padding:10px;margin-top:10px;font-size:14px}
+.top{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-bottom:10px}
+.pill{background:#0a1236cc;border:2px solid #3b5bd6;border-radius:30px;padding:6px 14px;font-weight:bold}
+#clock{color:var(--or);font-variant-numeric:tabular-nums;direction:ltr;display:inline-block}
+#ann{display:none;background:var(--pk);color:#210a35;padding:8px;border-radius:12px;margin-bottom:10px;text-align:center;font-weight:bold}
+.fr{display:inline-flex;flex-direction:column;align-items:center;vertical-align:middle;margin:0 5px;line-height:1.1;font-weight:bold}
+.fr i{font-style:normal;padding:0 6px}.fr i:first-child{border-bottom:3px solid currentColor}.fr u{display:none}
+.bar{display:inline-flex;direction:ltr;border:3px solid #fff;border-radius:6px;overflow:hidden;margin:6px 4px}
+.bar b{width:30px;height:26px;border-left:2px solid #0a1236;background:#0a1236}.bar b.f{background:linear-gradient(var(--cy),#0a8fd6)}
+.grid{display:inline-grid;direction:ltr;border:3px solid #fff;margin:6px}
+.grid b{width:26px;height:26px;border:1px solid #0a1236;background:#0a1236}.grid b.c{background:var(--cy)}.grid b.r{background:var(--or)}.grid b.x{background:var(--gr);box-shadow:inset 0 0 8px #fff}
+.lesson p{margin:10px 0;line-height:2;font-size:18px}
+.box{background:#0a1236aa;border-right:6px solid var(--gr);border-radius:12px;padding:10px 14px;margin:10px 0;font-size:20px}
+.vis{text-align:center}
+/* ARENA */
+#arena{position:relative;height:min(78vh,640px);border-radius:22px;overflow:hidden;border:3px solid #3b5bd6;cursor:none;touch-action:manipulation;background:linear-gradient(#1c0b3a,#3a1457 55%,#0e2a55);user-select:none}
+#arena::before{content:"";position:absolute;left:0;right:0;bottom:0;height:34%;background:repeating-linear-gradient(90deg,#0b1a3d 0 60px,#0f2250 60px 120px);clip-path:polygon(0 40%,10% 20%,25% 35%,40% 10%,55% 30%,70% 15%,85% 35%,100% 20%,100% 100%,0 100%)}
+#qp{position:absolute;top:8px;left:8px;right:8px;text-align:center;background:#050c26dd;border:2px solid var(--cy);border-radius:16px;padding:8px;z-index:3}
+#qtxt{font-size:clamp(20px,4vw,34px);direction:rtl}
+#tgs{position:absolute;left:0;right:0;top:38%;display:flex;justify-content:space-around;flex-wrap:wrap;gap:8px;padding:0 8px;z-index:2}
+.tg{width:clamp(120px,21%,190px);text-align:center;animation:sway 2.6s ease-in-out infinite alternate;animation-delay:var(--d)}
+.tg .bot{font-size:clamp(46px,9vw,80px);filter:drop-shadow(0 6px 8px #000a)}
+.tg .lab{background:#050c26;border:3px solid var(--or);border-radius:14px;padding:6px 4px;font-size:clamp(18px,3.4vw,30px);margin-top:-6px}
+@keyframes sway{from{transform:translate(-16px,0)}to{transform:translate(16px,-14px)}}
+.tg.hit{animation:boom .6s forwards}.tg.burn{animation:burn .9s forwards}.tg.cor .lab{border-color:var(--gr);box-shadow:0 0 18px var(--gr)}
+@keyframes boom{50%{transform:scale(1.5);filter:brightness(3)}to{transform:scale(0);opacity:0}}
+@keyframes burn{0%,50%{filter:sepia(1) saturate(8) hue-rotate(-30deg)}to{transform:translateY(30px) scale(.6);opacity:.2;filter:grayscale(1) brightness(.2)}}
+#gun{position:absolute;bottom:-6px;left:50%;width:min(380px,66vw);transform:translateX(-50%);z-index:4;pointer-events:none;filter:drop-shadow(0 0 10px #000)}
+#gun.rc{animation:rc .15s}@keyframes rc{50%{transform:translateX(-50%) translate(-10px,24px)}}
+#flash{position:absolute;inset:0;pointer-events:none;z-index:5;opacity:0}
+.hole{position:absolute;width:14px;height:14px;margin:-7px;border-radius:50%;background:radial-gradient(#000,#000 40%,#ffd24d 41%,transparent 70%);z-index:4;animation:fade 2s forwards;pointer-events:none}
+@keyframes fade{to{opacity:0}}
+#xh{position:fixed;width:46px;height:46px;margin:-23px;border:2px solid var(--rd);border-radius:50%;pointer-events:none;z-index:99;display:none}
+#xh::before,#xh::after{content:"";position:absolute;background:var(--rd)}#xh::before{left:50%;top:-8px;bottom:-8px;width:2px}#xh::after{top:50%;left:-8px;right:-8px;height:2px}
+body.ing #xh{display:block}
+.hud{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px}
+#hg{height:70px;width:42px}
+@keyframes pulse{50%{transform:scale(1.15);color:var(--rd)}}.lowt{animation:pulse .5s infinite}
+.stars{font-size:50px;text-align:center}
+#lock{position:fixed;inset:0;background:#000d;z-index:200;display:none;align-items:center;justify-content:center;text-align:center;font-size:26px;padding:20px}
+/* teacher */
+#tb{position:fixed;bottom:8px;left:8px;z-index:150;background:#0008;border:1px solid #fff4;color:#fff;border-radius:50%;width:42px;height:42px;cursor:pointer;font-size:20px}
+#tp{position:fixed;inset:0;background:#050c26f5;z-index:180;display:none;overflow:auto;padding:14px}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}.tabs button{padding:8px 14px;border-radius:12px;border:2px solid #3b5bd6;background:#13235a;color:#fff;font:inherit;cursor:pointer}.tabs button.on{background:var(--cy);color:#012}
+table{width:100%;border-collapse:collapse;font-size:14px}td,th{border-bottom:1px solid #fff2;padding:6px;text-align:center}th{color:var(--or)}
+.kp{display:flex;gap:10px;flex-wrap:wrap}.kp div{flex:1;min-width:120px;background:#13235a;border-radius:14px;padding:12px;text-align:center}.kp b{display:block;font-size:28px;color:var(--gr)}
+.ch{display:flex;align-items:flex-end;gap:14px;height:160px;margin:12px 0;direction:ltr}.ch div{flex:1;background:linear-gradient(var(--cy),#0a52d6);border-radius:8px 8px 0 0;text-align:center;font-size:13px;position:relative;min-height:4px}
+.sm{padding:8px 12px;border-radius:10px;border:0;background:var(--or);font:inherit;cursor:pointer;margin:3px}
+video{width:100%;max-width:420px;border-radius:14px;background:#000}
+.bl{position:absolute;left:0;top:0;width:10px;height:28px;margin:-14px 0 0 -5px;border-radius:5px 5px 50% 50%;background:linear-gradient(#fff,#ffd24d 40%,#ff7a00);box-shadow:0 0 14px 4px #ffb347,0 26px 22px 6px #ff7a0088;z-index:6;pointer-events:none}
+#arena.sm::after{content:"";position:absolute;inset:0;box-shadow:inset 0 0 140px 30px #000d;pointer-events:none;z-index:5}
+#scam{position:fixed;right:8px;bottom:8px;width:76px;z-index:140;display:none;border:2px solid var(--cy);border-radius:12px;overflow:hidden;background:#000}#scam video{width:100%;display:block;transform:scaleX(-1)}#smic{height:6px;background:#0a1236}#smic i{display:block;height:100%;width:0;background:var(--gr)}
+@media(max-width:600px){#gun{width:250px}.tg .bot{font-size:44px}}
+</style></head><body>
+<div id="xh"></div><div id="lock"><div>⏰ زمان ۱۲ ساعته بازی تمام شد!<br><small>برای فعال‌سازی دوباره از معلم کمک بگیرید.</small></div></div>
+
+<div class="scr on" id="sName"><div class="card">
+<h1>⚔️ نبرد کسرها ⚔️</h1><p class="sub">ریاضی ششم ابتدایی - فصل دوم: ضرب و تقسیم کسرها<br>۵ مرحله • هر مرحله ۵ سؤال • ۳ جان</p>
+<input id="fn" placeholder="نام" oninput="pre()"><input id="ln" placeholder="نام خانوادگی" oninput="pre()">
+<div class="warn">⚠️ بعد از ورود، راه برگشت نیست و نام قابل تغییر نیست. با دقت وارد کن!</div>
+<div class="warn" style="border-color:var(--cy);background:#22e6ff22">📷🎤 از لحظهٔ ورود، دوربین و میکروفن روشن می‌شوند و از تو فیلم گرفته می‌شود تا تقلب نشود. بدون اجازهٔ دوربین نمی‌توانی وارد شوی.</div><button class="btn" onclick="enter()">🎯 ورود به میدان نبرد</button></div></div>
+
+<div class="scr" id="sLesson"><div id="ann"></div><div class="top"><span class="pill" id="who"></span><span class="pill">⏳ <span id="clock">12:00:00</span></span></div><div class="card lesson" id="lessonBox"></div></div>
+
+<div class="scr" id="sGame"><div class="top"><span class="pill" id="who2"></span><span class="pill">⏳ <span id="clock2">12:00:00</span></span></div>
+<div class="hud"><span class="pill" id="hearts"></span><span class="pill" id="prog"></span><span class="pill">⭐ <span id="score">۰</span></span>
+<span class="pill" style="display:flex;align-items:center;gap:6px"><svg id="hg" viewBox="0 0 60 100"><defs><clipPath id="ct"><polygon points="8,6 52,6 33,46 27,46"/></clipPath><clipPath id="cb"><polygon points="27,54 33,54 52,94 8,94"/></clipPath></defs>
+<rect id="st" x="0" y="6" width="60" height="40" fill="#ffc04d" clip-path="url(#ct)"/><rect id="sb" x="0" y="94" width="60" height="0" fill="#ffc04d" clip-path="url(#cb)"/><line id="sl" x1="30" y1="46" x2="30" y2="94" stroke="#ffc04d" stroke-width="2" stroke-dasharray="3 3"><animate attributeName="stroke-dashoffset" from="0" to="-12" dur=".4s" repeatCount="indefinite"/></line>
+<path d="M6 4H54L34 48 54 96H6L26 48Z" fill="none" stroke="#fff" stroke-width="3"/><rect x="2" y="0" width="56" height="5" rx="2" fill="#3b5bd6"/><rect x="2" y="95" width="56" height="5" rx="2" fill="#3b5bd6"/></svg><b id="tl">۰۱:۳۰</b></span></div>
+<div id="arena"><div id="qp"><div id="qtxt"></div><div class="vis" id="qvis"></div></div><div id="tgs"></div><svg id="gun" viewBox="0 0 360 200"><defs><linearGradient id="gm" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4a505c"/><stop offset="1" stop-color="#1b1e24"/></linearGradient><radialGradient id="gl"><stop offset="0" stop-color="#9fe8ff"/><stop offset="1" stop-color="#0a3a66"/></radialGradient></defs>
+<g transform="rotate(-24 180 110)" stroke="#05070a" stroke-width="2" stroke-linejoin="round">
+<path d="M10 118L34 96L112 102L120 130L96 152L30 158Z" fill="#59603f"/><path d="M34 96L112 102L110 110L40 106Z" fill="#7b8458" stroke="none"/><rect x="14" y="116" width="10" height="38" rx="3" fill="#15171c"/>
+<rect x="110" y="96" width="96" height="32" rx="5" fill="url(#gm)"/><rect x="204" y="103" width="126" height="10" fill="#23262d"/><g stroke="#4a505c" stroke-width="1.5"><path d="M240 103v10M250 103v10M260 103v10M270 103v10"/></g>
+<rect x="204" y="113" width="72" height="16" rx="3" fill="#2d3139"/><g stroke="#8a93a3" stroke-width="3" stroke-linecap="round"><path d="M244 129L230 164M258 129L276 164"/></g>
+<rect x="328" y="98" width="24" height="22" rx="3" fill="#0f1115"/><g stroke="#4a505c"><path d="M334 98v22M341 98v22M348 98v22"/></g>
+<rect x="140" y="126" width="24" height="32" rx="3" fill="#1a1c21"/><path d="M112 126H134L128 164H106Z" fill="#1a1c21"/><path d="M168 128Q172 146 190 146L196 128" fill="none" stroke="#2d3139" stroke-width="4"/><path d="M180 128v12" stroke="#8a93a3" stroke-width="3"/>
+<path d="M168 102L190 92" stroke="#8a93a3" stroke-width="4" stroke-linecap="round"/><circle cx="192" cy="91" r="5" fill="#8a93a3"/>
+<rect x="134" y="84" width="10" height="14" fill="#2d3139"/><rect x="188" y="84" width="10" height="14" fill="#2d3139"/>
+<rect x="118" y="68" width="104" height="18" rx="9" fill="#15171c"/><rect x="156" y="60" width="14" height="10" rx="2" fill="#2d3139"/><rect x="182" y="74" width="12" height="16" rx="2" fill="#2d3139" opacity="0"/>
+<ellipse cx="222" cy="77" rx="7" ry="11" fill="url(#gl)" stroke="#8a93a3"/><path d="M216 77h12M222 70v14" stroke="#ff3b5c" stroke-width="1" opacity=".9"/><ellipse cx="118" cy="77" rx="6" ry="9" fill="#0a0c11" stroke="#8a93a3"/><circle cx="224" cy="73" r="2.2" fill="#fff" stroke="none" opacity=".8"/>
+<circle id="mz" cx="352" cy="109" r="1" fill="none" stroke="none"/></g></svg><div id="flash"></div></div></div>
+
+<div class="scr" id="sEnd"><div class="card" id="endBox"></div></div>
+
+<div id="scam"><video id="sv" autoplay muted playsinline></video><div id="smic"><i></i></div></div>
+<button id="tb" onclick="openT()" title="پنل معلم">👨‍🏫</button>
+<div id="tp"></div>
+
+<script>
+const $=s=>document.querySelector(s),fa=s=>String(s).replace(/\d/g,d=>'۰۱۲۳۴۵۶۷۸۹'[d]);
+const g=(a,b)=>b?g(b,a%b):a,R=(a,b)=>a+Math.floor(Math.random()*(b-a+1)),sh=a=>a.sort(()=>Math.random()-.5),P=a=>a[R(0,a.length-1)];
+const J=k=>{try{return JSON.parse(localStorage.getItem(k))}catch(e){return null}},W=(k,v)=>{try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}};
+const F=(n,d)=>{const k=g(n,d);return[n/k,d/k]},fr=([n,d])=>d==1?`<b>${fa(n)}</b>`:`<span class=fr><i>${fa(n)}</i><u>/</u><i>${fa(d)}</i></span>`;
+const bar=(a,b)=>`<span class=bar>${Array.from({length:b},(_,i)=>`<b class="${i<a?'f':''}"></b>`).join('')}</span>`;
+const grid=(a,b,c,d)=>`<span class=grid style="grid-template-columns:repeat(${b},26px)">${Array.from({length:b*d},(_,i)=>{const x=i%b<a,y=Math.floor(i/b)<c;return`<b class="${x&&y?'x':x?'c':y?'r':''}"></b>`}).join('')}</span>`;
+/* ---------- audio ---------- */
+let AC;const ac=()=>AC||(AC=new(window.AudioContext||window.webkitAudioContext)());
+function tone(f,d,t='sine',v=.2,s=0){try{const a=ac(),o=a.createOscillator(),G=a.createGain(),T=a.currentTime+s;o.type=t;o.frequency.value=f;G.gain.setValueAtTime(v,T);G.gain.exponentialRampToValueAtTime(.001,T+d);o.connect(G);G.connect(a.destination);o.start(T);o.stop(T+d)}catch(e){}}
+function noise(d,v,fq,s=0){try{const a=ac(),b=a.createBuffer(1,a.sampleRate*d,a.sampleRate),x=b.getChannelData(0);for(let i=0;i<x.length;i++)x[i]=(Math.random()*2-1)*(1-i/x.length);const n=a.createBufferSource();n.buffer=b;const f=a.createBiquadFilter();f.frequency.value=fq;const G=a.createGain();G.gain.value=v;n.connect(f);f.connect(G);G.connect(a.destination);n.start(a.currentTime+s)}catch(e){}}
+const sGun=()=>{noise(.22,.6,2200);tone(110,.15,'square',.25)},sOk=()=>[660,880,1320,1760].forEach((f,i)=>tone(f,.25,'triangle',.25,i*.08)),
+sBad=()=>{for(let i=0;i<14;i++)noise(.08,.4,900+R(0,2000),i*.05);tone(140,.8,'sawtooth',.25);tone(420,.5,'square',.3,.1);tone(420,.5,'square',.3,.7)},sWin=()=>[523,659,784,1046,784,1046,1318].forEach((f,i)=>tone(f,.3,'triangle',.25,i*.12));
+/* ---------- questions ---------- */
+const NAMES=['ضرب عدد صحیح در کسر','ضرب کسر در کسر','ضرب کسر با شکل','تقسیم کسر بر عدد','تقسیم کسر بر کسر'];
+const GEN=[
+()=>{const b=P([3,4,5,6,8,10]),a=R(1,b-1),n=R(2,5);return{q:`${fa(n)} × ${fr([a,b])} = ؟`,v:bar(a,b)+'<small> شکل کسر</small>',a:F(n*a,b),c:[[n*a,n*b],[a,b*n],[n+a,b],[n*a,b+n],[n*a+1,b]]}},
+()=>{const b=R(2,9),d=R(2,9),a=R(1,b-1),c=R(1,d-1);return{q:`${fr([a,b])} × ${fr([c,d])} = ؟`,a:F(a*c,b*d),c:[[a+c,b+d],[a*d,b*c],[a*c,b+d],[a*c,b*d+1],[a+c,b*d]]}},
+()=>{const b=R(2,5),d=R(2,5),a=R(1,b-1),c=R(1,d-1);return{q:`طبق شکل، ${fr([a,b])} × ${fr([c,d])} چند است؟ (ناحیهٔ سبز)`,v:grid(a,b,c,d),a:F(a*c,b*d),c:[[a+c,b+d],[a,b],[c,d],[a*c,b+d],[a*c+1,b*d],[a*c,b*d-1]]}},
+()=>{const b=R(2,6),a=R(1,b-1),n=R(2,4);return{q:`${fr([a,b])} ÷ ${fa(n)} = ؟`,v:bar(a,b)+'<small> هر قسمت را '+fa(n)+' تکه کن</small>',a:F(a,b*n),c:[[a*n,b],[a,b+n],[a+n,b],[a,b],[a*n,b*n+1]]}},
+()=>{const b=R(2,8),d=R(2,8),a=R(1,b),c=R(1,d);return{q:`${fr([a,b])} ÷ ${fr([c,d])} = ؟`,a:F(a*d,b*c),c:[[a*c,b*d],[b*c,a*d],[a*d,b*d],[a+c,b+d],[a*d+1,b*c]]}}];
+function mk(s){let o;do{o=GEN[s]()}while(0);const k=o.a.join('/'),seen={[k]:1},opts=[o.a];for(const c of sh(o.c)){const f=F(...c),kk=f.join('/');if(f[1]>0&&!seen[kk]&&opts.length<4){seen[kk]=1;opts.push(f)}}
+while(opts.length<4){const f=F(o.a[0]+R(1,5),o.a[1]),kk=f.join('/');if(!seen[kk]){seen[kk]=1;opts.push(f)}}
+const idx=sh([0,1,2,3]);return{q:o.q,v:o.v||'',o:idx.map(i=>opts[i]),cor:idx.indexOf(0)}}
+/* ---------- lessons ---------- */
+const LES=[
+`<p>برای ضرب یک عدد صحیح در کسر، عدد را در <b>صورت</b> ضرب می‌کنیم و مخرج ثابت می‌ماند. یعنی کسر را چند بار با خودش جمع می‌کنیم.</p><div class=box class=vis>${fa(3)} × ${fr([2,5])} = ${fr([2,5])}+${fr([2,5])}+${fr([2,5])} = ${fr([6,5])}</div><div class=vis>${bar(2,5)}${bar(2,5)}${bar(2,5)}</div><p>🔑 نکته: اگر شد، جواب را ساده کن یا به صورت عدد مخلوط بنویس.</p>`,
+`<p>در ضرب دو کسر: <b>صورت × صورت</b> و <b>مخرج × مخرج</b>. بعد جواب را ساده می‌کنیم.</p><div class=box>${fr([2,3])} × ${fr([3,4])} = ${fr([6,12])} = ${fr([1,2])}</div><p>🔑 نکته: قبل از ضرب می‌توانی ضربدری ساده کنی: ۳ بالا با ۳ پایین حذف می‌شوند!</p>`,
+`<p>برای ضرب کسر با شکل، یک مستطیل می‌کشیم. کسر اول را <b>عمودی</b> (آبی) و کسر دوم را <b>افقی</b> (نارنجی) رنگ می‌کنیم. جایی که هر دو رنگ روی هم می‌افتند (سبز)، جواب است!</p><div class=vis>${grid(2,3,1,2)}</div><div class=box>${fr([2,3])} × ${fr([1,2])} = ${fr([2,6])} = ${fr([1,3])}<br><small>۲ خانهٔ سبز از ۶ خانه</small></div>`,
+`<p>برای تقسیم کسر بر عدد صحیح، <b>مخرج</b> را در آن عدد ضرب می‌کنیم (هر قسمت را به چند تکه تقسیم می‌کنیم).</p><div class=box>${fr([3,4])} ÷ ${fa(3)} = ${fr([3,12])} = ${fr([1,4])}</div><div class=vis>${bar(3,4)}</div><p>🔑 نکته: اگر صورت بر عدد بخش‌پذیر بود، صورت را تقسیم کن: ${fr([6,7])} ÷ ${fa(3)} = ${fr([2,7])}</p>`,
+`<p>برای تقسیم کسر بر کسر: <b>کسر اول را حفظ کن، تقسیم را به ضرب تبدیل کن و کسر دوم را وارونه کن.</b></p><div class=box>${fr([2,3])} ÷ ${fr([4,5])} = ${fr([2,3])} × ${fr([5,4])} = ${fr([10,12])} = ${fr([5,6])}</div><p>🔑 «بپر، وارونه کن، ضرب کن!» 🐸</p>`];
+/* ---------- state ---------- */
+let st=J('mg_st'),S,Q,tm,lock,left,T=90,SM,SP;
+const show=id=>{document.querySelectorAll('.scr').forEach(e=>e.classList.toggle('on',e.id==id));document.body.classList.toggle('ing',id=='sGame');scrollTo(0,0)};
+async function enter(){if(EN)return;const n=$('#fn').value.trim(),l=$('#ln').value.trim();if(!n||!l)return alert('نام و نام خانوادگی را کامل بنویس');EN=1;ac().resume&&ac().resume();await sCam();if(!SM){EN=0;return alert('برای ورود باید دوربین و میکروفن را روشن کنی. در پنجرهٔ مرورگر «اجازه» را بزن و دوباره تلاش کن.')}st={name:n+' '+l,stage:0};st.code=uc();reg();W('mg_st',st);if(!J('mg_dl'))W('mg_dl',Date.now()+12*3600e3);startRec();lesson()}
+function lesson(){if(st.stage>4)return final();$('#who').textContent='👤 '+st.name+' | 🆔 '+fa(st.code);$('#lessonBox').innerHTML=`<h1>📘 درسنامه مرحله ${fa(st.stage+1)}</h1><h2 style="text-align:center">${NAMES[st.stage]}</h2>${LES[st.stage]}<button class="btn or" onclick="start()">🔥 شروع مرحله ${fa(st.stage+1)}</button>`;ann();show('sLesson')}
+function ann(){const m=J('mg_msg');$('#ann').style.display=m?'block':'none';$('#ann').textContent='📢 '+(m||'')}
+async function start(){ac().resume&&ac().resume();if(!SM){await sCam();if(!SM)return alert('دوربین و میکروفن باید روشن باشند')}startRec();st.busy=1;W('mg_st',st);S={lv:0,qi:0,lives:3,ok:0,bad:0,wl:[],sc:0};Q=Array.from({length:5},()=>mk(st.stage));$('#who2').textContent='👤 '+st.name;$('#score').textContent='۰';show('sGame');next()}
+function hearts(){$('#hearts').textContent='❤️'.repeat(S.lives)+'🖤'.repeat(3-S.lives)}
+function next(){if(S.qi>=5)return endStage(1);const q=Q[S.qi];lock=0;hearts();$('#prog').textContent=`🎯 سؤال ${fa(S.qi+1)} از ۵ | مرحله ${fa(st.stage+1)}`;$('#qtxt').innerHTML=q.q;$('#qvis').innerHTML=q.v;
+$('#tgs').innerHTML=q.o.map((o,i)=>`<div class=tg data-i=${i} style="--d:-${i*.7}s"><div class=bot>${['👾','🤖','👹','🛸'][i]}</div><div class=lab>${fr(o)}</div></div>`).join('');left=T;clearInterval(tm);tm=setInterval(tick,100);tick(0)}
+function tick(d=1){if(d)left-=.1;const f=Math.max(left,0)/T;const lt=Math.ceil(Math.max(left,0));$('#tl').textContent=fa(String(Math.floor(lt/60)).padStart(2,'0')+':'+String(lt%60).padStart(2,'0'));$('#tl').classList.toggle('lowt',left<10);
+$('#st').setAttribute('height',40*f);$('#st').setAttribute('y',46-40*f);$('#sb').setAttribute('height',40*(1-f));$('#sb').setAttribute('y',94-40*(1-f));$('#sl').style.display=f>0?'':'none';if(left<=0&&!lock){clearInterval(tm);lock=1;bad(-1)}}
+$('#arena').addEventListener('pointerdown',e=>{if(lock)return;sGun();const A=$('#arena'),r=A.getBoundingClientRect(),mz=$('#mz').getBoundingClientRect(),sx=mz.left+mz.width/2-r.left,sy=mz.top+mz.height/2-r.top,tx=e.clientX-r.left,ty=e.clientY-r.top,dx=tx-sx,dy=ty-sy,t=e.target.closest('.tg');
+const gn=$('#gun');gn.classList.remove('rc');void gn.offsetWidth;gn.classList.add('rc');
+const f=$('#flash');f.style.background=`radial-gradient(circle at ${sx}px ${sy}px,#fffd,transparent 16%)`;f.style.opacity=1;setTimeout(()=>f.style.opacity=0,90);
+if(t){lock=1;clearInterval(tm)}
+const b=document.createElement('div');b.className='bl';A.appendChild(b);A.classList.add('sm');
+const ang=Math.atan2(dx,-dy),p=(k,z)=>`translate(${sx+dx*k}px,${sy+dy*k}px) rotate(${ang}rad) scale(${z})`;
+setTimeout(()=>{noise(.15,.5,5000);tone(900,.12,'sawtooth',.12)},880);
+b.animate([{transform:p(0,2.2)},{transform:p(.4,1.7),offset:.88},{transform:p(1,.9)}],{duration:1000,easing:'linear',fill:'forwards'}).onfinish=()=>{b.remove();A.classList.remove('sm');
+const h=document.createElement('div');h.className='hole';h.style.left=tx+'px';h.style.top=ty+'px';A.appendChild(h);setTimeout(()=>h.remove(),2000);
+f.style.background=`radial-gradient(circle at ${tx}px ${ty}px,#fffc,transparent 20%)`;f.style.opacity=1;setTimeout(()=>f.style.opacity=0,70);
+if(!t)return;const i=+t.dataset.i;if(i===Q[S.qi].cor){S.ok++;S.sc+=10+Math.ceil(left/3);$('#score').textContent=fa(S.sc);t.classList.add('hit');sOk();setTimeout(()=>{S.qi++;next()},900)}else bad(i)}});
+function bad(i){const q=Q[S.qi];S.bad++;S.lives--;const d=document.createElement('div');d.innerHTML=q.q;S.wl.push(NAMES[st.stage]+': '+d.textContent);sBad();if(i>=0)document.querySelector(`.tg[data-i="${i}"]`).classList.add('burn');document.querySelector(`.tg[data-i="${q.cor}"]`).classList.add('cor');
+const f=$('#flash');f.style.background='radial-gradient(circle,#ff3b5c88,#ff3b5c)';f.style.opacity=.8;setTimeout(()=>f.style.opacity=0,400);hearts();setTimeout(()=>{if(S.lives<=0)endStage(0);else{S.qi++;next()}},1600)}
+document.addEventListener('pointermove',e=>{const x=$('#xh');x.style.left=e.clientX+'px';x.style.top=e.clientY+'px'});
+function endStage(win){clearInterval(tm);const r=J('mg_res')||[];r.push({n:st.name,s:st.stage+1,ok:S.ok,bad:S.bad,l:S.lives,w:win,sc:S.sc,wl:S.wl,ts:Date.now(),img:sImg(),c:st.code,lv:S.lv});W('mg_res',r);
+const stars=win?'⭐'.repeat(S.lives>=3?3:S.lives==2?2:1):'💀';win?sWin():sBad();
+$('#endBox').innerHTML=`<div class=stars>${stars}</div><h1>${win?'مرحله '+fa(st.stage+1)+' پاک شد! 🎉':'جان‌هات تموم شد! 💥'}</h1><div class=kp style="margin:14px 0"><div>✅ درست<b>${fa(S.ok)}</b></div><div>❌ غلط<b>${fa(S.bad)}</b></div><div>⭐ امتیاز<b>${fa(S.sc)}</b></div></div>`+(win?'':`<p class=sub>جان‌هات تموم شد! اشکال نداره، مرحلهٔ بعد رو با دقت بیشتر بازی کن 💪</p>`)+`<button class="btn ${win?'':'or'}" onclick="st.stage<5?lesson():final()">${st.stage<4?'📘 درسنامه مرحله بعد':'🏆 پایان بازی'}</button>`;st.stage++;st.busy=0;W('mg_st',st);show('sEnd')}
+function final(){try{MR&&MR.stop()}catch(e){}const r=(J('mg_res')||[]).filter(x=>x.n==st.name),tot=r.reduce((a,x)=>a+x.sc,0);sWin();$('#endBox').innerHTML=`<div class=stars>🏆</div><h1>قهرمان کسرها! 👑</h1><p class=sub>${st.name} عزیز، هر ۵ مرحله را پشت سر گذاشتی!<br>امتیاز کل: <b>${fa(tot)}</b><br>🆔 کد دانش‌آموزی: <b>${fa(st.code)}</b></p><div class=box style="font-size:15px">📋 رمزینهٔ نتایج (برای معلم بفرست):<textarea id=rc readonly rows=3 style="width:100%;background:#0a1236;color:#fff;border-radius:10px;padding:8px;font-size:11px;direction:ltr;margin-top:6px">${mkCode()}</textarea></div><button class=btn onclick="cpy()">📋 کپی رمزینه</button><button class="btn or" onclick="dlv()">⬇️ ذخیرهٔ فیلم (با نام روی آن)</button><button class=btn style="background:linear-gradient(#c77dff,#8a3ffc);box-shadow:0 6px 0 #5a1d9a;color:#fff" onclick="sendT()">📤 ارسال برای معلم</button>`;show('sEnd')}
+async function sCam(){if(SM||SP)return;SP=1;try{SM=await navigator.mediaDevices.getUserMedia({video:{width:320,height:240},audio:true});$('#sv').srcObject=SM;$('#scam').style.display='block';const a=ac(),an=a.createAnalyser();a.createMediaStreamSource(SM).connect(an);const d=new Uint8Array(an.frequencyBinCount);(function L(){const m=$('#smic i');an.getByteFrequencyData(d);m.style.width=Math.min(100,d.reduce((x,y)=>x+y,0)/d.length*2.5)+'%';requestAnimationFrame(L)})()}catch(e){SM=null;$('#scam').style.display='none'}SP=0}
+function sImg(){try{const v=$('#sv');if(!SM||!v.videoWidth)return'';const c=document.createElement('canvas');c.width=120;c.height=90;c.getContext('2d').drawImage(v,0,0,120,90);return c.toDataURL('image/jpeg',.5)}catch(e){return''}}
+let DB,MR,SEQ=0,EN,WI,PRE;
+function pre(){if($('#fn').value.trim()&&$('#ln').value.trim()&&!SM&&!SP&&!PRE){PRE=1;ac();sCam()}}
+document.addEventListener('visibilitychange',()=>{if(document.hidden&&S&&$('#sGame').classList.contains('on'))S.lv=(S.lv||0)+1});
+function uc(){const u=(J('mg_stu')||[]).map(x=>x.code);let c;do{c=String(R(100000,999999))}while(u.includes(c));return c}
+function reg(){const u=J('mg_stu')||[];u.push({code:st.code,name:st.name,ts:Date.now()});W('mg_stu',u)}
+const idb=()=>DB||(DB=new Promise((ok,no)=>{const q=indexedDB.open('mgv',1);q.onupgradeneeded=()=>q.result.createObjectStore('c',{autoIncrement:true});q.onsuccess=()=>ok(q.result);q.onerror=()=>no()}));
+async function put(o){try{(await idb()).transaction('c','readwrite').objectStore('c').add(o)}catch(e){}}
+function startRec(){if(!SM||(MR&&MR.state=='recording'))return;try{SEQ=0;const code=st.code,nm=st.name,ss=Date.now(),v=$('#sv'),c=document.createElement('canvas');c.width=240;c.height=180;const x=c.getContext('2d');clearInterval(WI);
+WI=setInterval(()=>{try{x.drawImage(v,0,0,240,180);x.fillStyle='rgba(255,255,255,.35)';x.textAlign='center';x.font='bold 16px Tahoma';x.fillText(nm,120,95);x.font='10px Tahoma';x.fillText(code+'  '+new Date().toLocaleTimeString('fa-IR'),120,172)}catch(e){}},66);
+const vs=c.captureStream(15);SM.getAudioTracks().forEach(t=>vs.addTrack(t));const mt=['video/mp4;codecs=avc1.42E01E,mp4a.40.2','video/mp4;codecs=avc1,mp4a.40.2','video/mp4','video/webm;codecs=vp8,opus','video/webm'].find(t=>MediaRecorder.isTypeSupported(t))||'',op={videoBitsPerSecond:150000,audioBitsPerSecond:32000};if(mt)op.mimeType=mt;MR=new MediaRecorder(vs,op);const mm=(MR.mimeType||mt||'video/webm').split(';')[0];MR.ondataavailable=e=>{if(e.data.size)put({c:code,n:nm,ss:ss,q:SEQ++,b:e.data,m:mm})};MR.onstop=()=>clearInterval(WI);MR.start(5000)}catch(e){}}
+async function getRecs(code){try{const d=await idb();return await new Promise(ok=>{const r=[];d.transaction('c').objectStore('c').openCursor().onsuccess=function(){const c=this.result;if(c){if(c.value.c==code)r.push(c.value);c.continue()}else ok(r)}})}catch(e){return[]}}
+async function pl(c,ss,dl){const r=(await getRecs(c)).filter(x=>x.ss==ss).sort((a,b)=>a.q-b.q),u=URL.createObjectURL(new Blob(r.map(x=>x.b),{type:(r[0]||{}).m||'video/webm'}));if(dl){const a=document.createElement('a');a.href=u;a.download='rec-'+c+(/mp4/.test((r[0]||{}).m||'')?'.mp4':'.webm');a.click()}else{const v=$('#rv');v.style.display='block';v.src=u;v.play()}}
+function hash(j){let h=7;for(const c of j+'mg-salt')h=(h*31+c.charCodeAt(0))>>>0;return h.toString(36)}
+function mkCode(){const rr=(J('mg_res')||[]).filter(x=>x.c==st.code),j=JSON.stringify({n:st.name,c:st.code,r:rr.map(x=>[x.s,x.ok,x.bad,x.l,x.sc,x.w?1:0,x.lv||0,x.ts]),w:rr.flatMap(x=>x.wl).slice(0,12)});return 'MG1-'+btoa(String.fromCharCode(...new TextEncoder().encode(j)))+'-'+hash(j)}
+function cpy(){const t=$('#rc');t.select();try{navigator.clipboard.writeText(t.value).then(()=>alert('رمزینه کپی شد ✅'),()=>{document.execCommand('copy');alert('کپی شد ✅')})}catch(e){document.execCommand('copy');alert('کپی شد ✅')}}
+async function vfile(code){const r=await getRecs(code);if(!r.length)return null;const m={};r.forEach(x=>(m[x.ss]=m[x.ss]||[]).push(x));const k=Object.keys(m).sort((a,b)=>m[b].length-m[a].length)[0];const t=m[k][0].m||'video/webm';return new File(m[k].sort((a,b)=>a.q-b.q).map(x=>x.b),'video-'+code+(/mp4/.test(t)?'.mp4':'.webm'),{type:t})}
+async function dlv(){const f=await vfile(st.code);if(!f)return alert('فیلمی پیدا نشد');const a=document.createElement('a');a.href=URL.createObjectURL(f);a.download=st.name.replace(/\s+/g,'_')+'-'+st.code+'.'+f.name.split('.').pop();a.click()}
+async function sendT(){const f=await vfile(st.code),t=$('#rc').value;try{if(f&&navigator.canShare&&navigator.canShare({files:[f]}))return await navigator.share({files:[f],text:t});if(navigator.share)return await navigator.share({text:t})}catch(e){return}cpy();alert('رمزینه کپی شد. آن را همراه فیلم ذخیره‌شده برای معلم بفرست.')}
+async function find(){const v=$('#qc').value.trim(),o=$('#qr');let d,loc=0;
+if(/^MG1-/.test(v)){const p=v.split('-');try{const j=new TextDecoder().decode(Uint8Array.from(atob(p[1]),c=>c.charCodeAt(0)));if(hash(j)!==p[2])return o.innerHTML='<p>⚠️ این رمزینه دستکاری شده یا ناقص کپی شده است.</p>';d=JSON.parse(j)}catch(e){return o.innerHTML='<p>❌ رمزینه معتبر نیست.</p>'}}
+else{const q=v.replace(/[۰-۹]/g,x=>'۰۱۲۳۴۵۶۷۸۹'.indexOf(x)),stu=(J('mg_stu')||[]).find(x=>x.code==q||x.name==q);if(!stu)return o.innerHTML='<p>❌ پیدا نشد. رمزینهٔ دانش‌آموز را کامل paste کن.</p>';const rr=(J('mg_res')||[]).filter(x=>x.c==stu.code);d={n:stu.name,c:stu.code,r:rr.map(x=>[x.s,x.ok,x.bad,x.l,x.sc,x.w?1:0,x.lv||0,x.ts]),w:rr.flatMap(x=>x.wl)};loc=1}
+window.CD=d;const sm=k=>d.r.reduce((a,x)=>a+x[k],0),rc=loc?await getRecs(d.c):[],ss=[...new Set(rc.map(x=>x.ss))];
+o.innerHTML=`<h2 style="margin-top:12px">👤 ${d.n} | 🆔 ${fa(d.c)}</h2><div class=kp><div>نمرهٔ کل<b>${fa(sm(4))}</b></div><div>درست<b>${fa(sm(1))}</b></div><div>غلط<b>${fa(sm(2))}</b></div><div>خروج از صفحه<b>${fa(sm(6))}</b></div></div><table><tr><th>مرحله</th><th>درست</th><th>غلط</th><th>جان</th><th>امتیاز</th><th>نتیجه</th></tr>${d.r.map(x=>`<tr><td>${NAMES[x[0]-1]}</td><td>${fa(x[1])}</td><td>${fa(x[2])}</td><td>${fa(x[3])}</td><td>${fa(x[4])}</td><td>${x[5]?'✅':'❌'}</td></tr>`).join('')||'<tr><td colspan=6>هنوز مرحله‌ای ثبت نشده</td></tr>'}</table>${d.w.length?`<h2 style="margin-top:12px">سؤال‌های غلط</h2>${d.w.map(x=>`<p>• ${x}</p>`).join('')}`:''}<button class=sm onclick="saveCD()">💾 ذخیره در تحلیل‌های پنل</button>${ss.map((x,i)=>`<button class=sm onclick="pl('${d.c}',${x})">▶ فیلم ${fa(i+1)}</button><button class=sm onclick="pl('${d.c}',${x},1)">⬇️</button>`).join('')}<h2 style="margin-top:12px">🎥 پخش فیلم دریافتی</h2><input type=file accept="video/*" onchange="const f=this.files[0];if(f){const v=$('#rv');v.style.display='block';v.src=URL.createObjectURL(f);v.play()}"><video id=rv controls style="display:none;margin-top:8px"></video>`}
+function saveCD(){const d=window.CD,u=J('mg_stu')||[];if(!u.find(x=>x.code==d.c))u.push({code:d.c,name:d.n,ts:Date.now()});W('mg_stu',u);const r=J('mg_res')||[];d.r.forEach((x,i)=>{if(!r.find(y=>y.c==d.c&&y.ts==x[7]))r.push({n:d.n,c:d.c,s:x[0],ok:x[1],bad:x[2],l:x[3],sc:x[4],w:!!x[5],lv:x[6],ts:x[7],wl:i?[]:d.w})});W('mg_res',r);alert('ذخیره شد؛ در تب «تحلیل نتایج» و «دانش‌آموزان» دیده می‌شود.')}
+/* ---------- 12h clock ---------- */
+setInterval(()=>{const d=J('mg_dl');if(!d)return;const l=d-Date.now();$('#lock').style.display=l<=0&&st?'flex':'none';const x=Math.max(l,0),p=n=>String(n).padStart(2,'0'),t=fa(p(Math.floor(x/36e5))+':'+p(Math.floor(x/6e4)%60)+':'+p(Math.floor(x/1e3)%60));$('#clock').textContent=$('#clock2').textContent=t},1000);
+if(st){if(!st.code){st.code=uc();reg();W('mg_st',st)}if(st.busy){const r=J('mg_res')||[];r.push({n:st.name,s:st.stage+1,ok:0,bad:0,l:0,w:false,sc:0,wl:['ترک مرحله (بستن صفحه)'],ts:Date.now(),c:st.code});W('mg_res',r);st.busy=0;st.stage++;W('mg_st',st)}lesson()}
+/* ---------- teacher panel ---------- */
+let ms,rec,chunks=[];
+function openT(){const p=prompt('رمز پنل معلم:');if(p===null)return;if(p!=='00800080')return alert('رمز اشتباه است');tab('a');$('#tp').style.display='block'}
+function closeT(){stopM();$('#tp').style.display='none'}
+function tab(t){const r=J('mg_res')||[];let h=`<div class=top><h2>👨‍🏫 پنل معلم</h2><button class=sm onclick="closeT()">✖ بستن</button></div><div class=tabs>${[['a','📊 تحلیل نتایج'],['s','👥 دانش‌آموزان'],['t','🧰 ابزارها'],['c','🎥 دوربین و میکروفن'],['q','🔎 رمزینهٔ دانش‌آموز']].map(x=>`<button class="${x[0]==t?'on':''}" onclick="tab('${x[0]}')">${x[1]}</button>`).join('')}</div><div class=card>`;
+const names=[...new Set(r.map(x=>x.n))];
+if(t=='a'){const tot=r.reduce((a,x)=>a+x.ok+x.bad,0),ok=r.reduce((a,x)=>a+x.ok,0),acc=tot?Math.round(ok/tot*100):0,wins=r.filter(x=>x.w).length;
+h+=`<div class=kp><div>دانش‌آموز<b>${fa(names.length)}</b></div><div>تلاش‌ها<b>${fa(r.length)}</b></div><div>دقت کل<b>${fa(acc)}٪</b></div><div>مرحله پاک‌شده<b>${fa(wins)}</b></div></div><h2 style="margin-top:14px">دقت هر مرحله</h2><div class=ch>${NAMES.map((n,i)=>{const z=r.filter(x=>x.s==i+1),o=z.reduce((a,x)=>a+x.ok,0),t2=z.reduce((a,x)=>a+x.ok+x.bad,0),p=t2?Math.round(o/t2*100):0;return`<div style="height:${Math.max(p,3)}%"><br>${fa(p)}٪<br><small style="position:absolute;bottom:-34px;left:0;right:0;font-size:11px">م${fa(i+1)}</small></div>`}).join('')}</div><br><br>`;
+const c={};r.forEach(x=>x.wl.forEach(w=>c[w]=(c[w]||0)+1));const top=Object.entries(c).sort((a,b)=>b[1]-a[1]).slice(0,6);
+h+=`<h2>سؤال‌های پرغلط 🔥</h2>`+(top.length?`<table>${top.map(x=>`<tr><td>${x[0]}</td><td>${fa(x[1])} بار</td></tr>`).join('')}</table>`:'<p>هنوز داده‌ای نیست.</p>');
+const weak=NAMES.map((n,i)=>{const z=r.filter(x=>x.s==i+1),o=z.reduce((a,x)=>a+x.ok,0),t2=z.reduce((a,x)=>a+x.ok+x.bad,0);return[n,t2?o/t2:2]}).sort((a,b)=>a[1]-b[1])[0];if(r.length)h+=`<div class=box>💡 پیشنهاد: مبحث «${weak[0]}» نیاز به تدریس مجدد دارد.</div>`}
+if(t=='s'){h+=`<table><tr><th>نام</th><th>مرحله</th><th>درست</th><th>غلط</th><th>جان</th><th>امتیاز</th><th>نتیجه</th><th>تصویر</th></tr>${[...r].reverse().map(x=>`<tr><td>${x.n}</td><td>${fa(x.s)}</td><td>${fa(x.ok)}</td><td>${fa(x.bad)}</td><td>${fa(x.l)}</td><td>${fa(x.sc)}</td><td>${x.w?'✅':'❌'}</td><td>${x.img?`<img src="${x.img}" width=44 style="border-radius:8px">`:'-'}</td></tr>`).join('')}</table><h2 style="margin-top:14px">🏅 برترین‌ها</h2>${names.map(n=>[n,r.filter(x=>x.n==n).reduce((a,x)=>a+x.sc,0)]).sort((a,b)=>b[1]-a[1]).slice(0,5).map((x,i)=>`<p>${['🥇','🥈','🥉','4️⃣','5️⃣'][i]} ${x[0]} — ${fa(x[1])}</p>`).join('')}<button class=sm onclick="csv()">⬇️ خروجی CSV</button> <button class=sm onclick="window.print()">🖨️ چاپ</button> <button class=sm style="background:var(--rd)" onclick="if(confirm('همهٔ نتایج پاک شود؟')){W('mg_res',[]);tab('s')}">🗑️ پاک‌کردن</button>`}
+if(t=='t'){h+=`<h2>🎲 انتخاب تصادفی دانش‌آموز</h2><button class=sm onclick="pick()">انتخاب کن</button>
+<h2 style="margin-top:14px">📢 پیام برای دانش‌آموزان</h2><input id=am value="${J('mg_msg')||''}" placeholder="مثلاً: فردا آزمون داریم!"><button class=sm onclick="W('mg_msg',$('#am').value);alert('ثبت شد')">ثبت پیام</button>
+<h2 style="margin-top:14px">⏱️ زمان‌سنج کلاس</h2><b id=cd style="font-size:34px">۰۰:۰۰</b><br><button class=sm onclick="cdn(60)">۱ دقیقه</button><button class=sm onclick="cdn(180)">۳ دقیقه</button><button class=sm onclick="cdn(300)">۵ دقیقه</button>
+<h2 style="margin-top:14px">⚙️ تنظیمات بازی</h2><button class=sm onclick="W('mg_dl',Date.now()+12*3600e3);alert('شمارش ۱۲ ساعته از نو شروع شد')">🔄 شروع دوبارهٔ ۱۲ ساعت</button><button class=sm onclick="T=+prompt('زمان هر سؤال (ثانیه):',T)||90">⏳ زمان هر سؤال</button><button class=sm onclick="if(confirm('ورود دانش‌آموز فعلی ریست شود؟')){localStorage.removeItem('mg_st');location.reload()}">🚪 دانش‌آموز جدید</button>`}
+if(t=='c'){h+=`<button class=sm onclick="cam()">📷 روشن کردن دوربین و میکروفن</button><button class=sm onclick="snap()">📸 عکس</button><button class=sm onclick="recd()">⏺️ ضبط / توقف</button><button class=sm onclick="stopM()">⏹ خاموش</button><br><br><video id=vid autoplay muted playsinline></video><p>🎤 سطح صدا:</p><div style="background:#0a1236;border-radius:8px;height:16px"><div id=lv style="height:100%;width:0;background:var(--gr);border-radius:8px"></div></div><p class=sub>تصاویر و ضبط‌ها فقط روی همین دستگاه ذخیره می‌شوند.</p>`}
+if(t=='q')h+=`<h2>🔎 رمزینهٔ دانش‌آموز را اینجا Paste کن</h2><textarea id=qc rows=3 placeholder="MG1-..." style="width:100%;padding:10px;border-radius:12px;background:#0a1236;color:#fff;direction:ltr"></textarea><button class=sm onclick="find()">نمایش اطلاعات و نمره</button><div id=qr></div>`;
+$('#tp').innerHTML=h+'</div>'}
+function pick(){const n=[...new Set((J('mg_res')||[]).map(x=>x.n))];alert(n.length?'🎯 '+n[Math.floor(Math.random()*n.length)]:'هنوز دانش‌آموزی ثبت نشده')}
+function cdn(s){clearInterval(window.cdt);const e=Date.now()+s*1e3;window.cdt=setInterval(()=>{const l=Math.max(0,Math.round((e-Date.now())/1e3));const el=$('#cd');if(el)el.textContent=fa(String(Math.floor(l/60)).padStart(2,'0')+':'+String(l%60).padStart(2,'0'));if(!l){clearInterval(window.cdt);sWin()}},250)}
+async function cam(){try{ms=await navigator.mediaDevices.getUserMedia({video:true,audio:true});$('#vid').srcObject=ms;const a=ac(),an=a.createAnalyser(),s=a.createMediaStreamSource(ms);s.connect(an);const d=new Uint8Array(an.frequencyBinCount);(function L(){if(!ms)return;an.getByteFrequencyData(d);const v=d.reduce((x,y)=>x+y,0)/d.length;const l=$('#lv');if(l)l.style.width=Math.min(100,v*2)+'%';requestAnimationFrame(L)})()}catch(e){alert('دسترسی به دوربین/میکروفن ممکن نشد. مرورگر را روی «اجازه» بگذارید. ('+e.name+')')}}
+function stopM(){if(ms){ms.getTracks().forEach(t=>t.stop());ms=null}}
+function snap(){const v=$('#vid');if(!ms)return alert('اول دوربین را روشن کن');const c=document.createElement('canvas');c.width=v.videoWidth;c.height=v.videoHeight;c.getContext('2d').drawImage(v,0,0);const a=document.createElement('a');a.href=c.toDataURL('image/png');a.download='photo.png';a.click()}
+function recd(){if(!ms)return alert('اول دوربین را روشن کن');if(rec&&rec.state=='recording'){rec.stop();return}chunks=[];rec=new MediaRecorder(ms);rec.ondataavailable=e=>chunks.push(e.data);rec.onstop=()=>{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob(chunks,{type:'video/webm'}));a.download='record.webm';a.click()};rec.start();alert('ضبط شروع شد. برای توقف دوباره دکمه را بزن')}
+function csv(){const r=J('mg_res')||[],t='\ufeffنام,مرحله,درست,غلط,جان,امتیاز,نتیجه\n'+r.map(x=>[x.n,x.s,x.ok,x.bad,x.l,x.sc,x.w?'قبول':'مردود'].join(',')).join('\n'),a=document.createElement('a');a.href=URL.createObjectURL(new Blob([t],{type:'text/csv'}));a.download='results.csv';a.click()}
+</script></body></html>
